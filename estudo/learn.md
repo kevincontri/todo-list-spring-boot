@@ -37,3 +37,11 @@
 - Não é boa prática ter atributos públicos nos schemas em projetos reais.
 
 ### Métodos Getters e Setters para atributos privados dos schemas.
+
+- Para atributos privados, é necessário ter métodos de acesso getters e setters.
+- Através deles, o próprio **@RequestBody** do Spring vai utilizar o método set para atribuir o valor aos atributos.
+
+# Uso do Lombok
+
+- Nos permite abstrai métodos construtores e de acesso.
+- Adicionamos no projeto essa funcionalidade por copiar e adicionar no _pom.xml_

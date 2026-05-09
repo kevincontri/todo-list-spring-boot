@@ -11,9 +11,10 @@ public class UserController {
 
   @PostMapping("")
   public String createUser(@RequestBody UserModel user) {
-    System.out.println(user.username);
-    System.out.println(user.email);
-    System.out.println(user.password);
-    return "User created successfully!";
+    System.out.println(user.getUsername());
+    System.out.println(user.getEmail());
+    System.out.println(user.getPassword());
+    return ("{\"username\": \"" + user.getUsername() + "\", \"email\": \"" + user.getEmail() + "\", \"password\": \""
+        + user.getPassword() + "\"}");
   }
 }
