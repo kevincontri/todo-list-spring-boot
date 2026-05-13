@@ -22,7 +22,7 @@ public class TaskController {
   private ITaskRepository taskRepository;
 
   @PostMapping("")
-  public ResponseEntity createTask(@RequestBody TaskModel task, HttpServletRequest request) {
+  public ResponseEntity<?> createTask(@RequestBody TaskModel task, HttpServletRequest request) {
     // Pegar o user_id do request e setar no task (coluna user_id)
     task.setUserId((UUID) request.getAttribute("user_id"));
     task.setAuthor_name((String) request.getAttribute("author_name"));
@@ -54,7 +54,7 @@ public class TaskController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity updateTask(@RequestBody TaskModel updateTaskModel, HttpServletRequest request,
+  public ResponseEntity<?> updateTask(@RequestBody TaskModel updateTaskModel, HttpServletRequest request,
       @PathVariable UUID id) {
 
     // Verificar se usuário é dono daquela task

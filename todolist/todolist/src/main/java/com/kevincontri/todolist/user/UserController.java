@@ -18,7 +18,7 @@ public class UserController {
   private IUserRepository userRepository;
 
   @PostMapping("")
-  public ResponseEntity createUser(@RequestBody UserModel user) {
+  public ResponseEntity<?> createUser(@RequestBody UserModel user) {
     // Verificar se o usuário já existe pelo email
     var existingUser = this.userRepository.findByEmail(user.getEmail());
     if (existingUser != null) {
