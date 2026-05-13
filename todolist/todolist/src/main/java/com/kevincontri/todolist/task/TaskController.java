@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.Period;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,19 @@ public class TaskController {
     return tasksFound;
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getTaskById(HttpServletRequest request, @PathVariable UUID id) {
+    var task = this.taskRepository.findById(id).orElse(null);
+    if (task == null) {
+      return ResponseEntity.status(400).body("Tarefa não encontrada");
+    }
+    if (!task.getUserId().equals(request.getAttribute("user_id"))) {
+      return ResponseEntity.status(403).body("Acesso não autorizado");
+    }
+
+    return ResponseEntity.status(200).body(task);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<?> updateTask(@RequestBody TaskModel updateTaskModel, HttpServletRequest request,
       @PathVariable UUID id) {
@@ -71,5 +86,20 @@ public class TaskController {
     Utils.copyNonNullProperties(updateTaskModel, task);
     var taskUpdated = this.taskRepository.save(task);
     return ResponseEntity.status(200).body(taskUpdated);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteTask(HttpServletRequest request, @PathVariable UUID id) {
+    var task = this.taskRepository.findById(id).orElse(null);
+    if (task == null) {
+      return ResponseEntity.status(400).body("Tarefa não encontrada");
+    }
+
+    if (!task.getUserId().equals(request.getAttribute("user_id"))) {
+      return ResponseEntity.status(403).body("Usuário não tem permissão");
+    }
+
+    this.taskRepository.delete(task);
+    return ResponseEntity.status(204).body("");
   }
 }
