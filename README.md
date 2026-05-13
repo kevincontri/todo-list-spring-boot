@@ -52,9 +52,11 @@ todolist/todolist/
 ### Usuários
 
 #### `POST /users`
+
 Cria um novo usuário.
 
 **Body:**
+
 ```json
 {
   "username": "kevin",
@@ -64,6 +66,7 @@ Cria um novo usuário.
 ```
 
 **Erros:**
+
 - `400 Bad Request` — usuário já existe
 
 ---
@@ -77,35 +80,50 @@ Authorization: Basic base64(email:senha)
 ```
 
 #### `POST /tasks`
+
 Cria uma nova tarefa para o usuário autenticado.
 
 **Body:**
+
 ```json
 {
   "title": "Estudar Spring Boot",
   "description": "Revisar autenticação e JPA",
   "priority": "ALTA",
   "startAt": "2026-06-01T09:00:00",
-  "endAt":   "2026-06-05T18:00:00"
+  "endAt": "2026-06-05T18:00:00"
 }
 ```
 
 **Erros:**
+
 - `400 Bad Request` — datas no passado ou `startAt` posterior a `endAt`
 
 #### `GET /tasks`
+
 Lista todas as tarefas do usuário autenticado.
 
+### `GET /tasks/{id}`
+
+Busca tarefa específica do usuário autenticado.
+
 #### `PUT /tasks/{id}`
+
 Atualiza parcialmente uma tarefa do usuário autenticado. Apenas os campos enviados no body são atualizados.
 
+### `DELETE /tasks/{id}`
+
+Delete tarefa específica do usuário autenticado.
+
 **Erros:**
+
 - `400 Bad Request` — tarefa não encontrada
 - `403 Forbidden` — a tarefa pertence a outro usuário
 
 ## Rodando localmente
 
 ### Pré-requisitos
+
 - Java 17
 - Maven 3.9+
 
