@@ -454,3 +454,5 @@ public void setTitle(String title) {
 
 ### Rodar a aplicação
 - `mvn spring-boot:run` no terminal, para não precisar manualmente clicar em _run_.
+
+### Deploy
