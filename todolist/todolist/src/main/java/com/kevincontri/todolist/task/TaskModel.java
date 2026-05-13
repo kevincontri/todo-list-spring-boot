@@ -27,8 +27,14 @@ public class TaskModel {
   private UUID userId;
   @Column(name = "priority")
   private String priority;
+  @Column(name = "author_name", length = 100)
+  private String author_name;
+  @Column(name = "start_at")
   private LocalDateTime startAt;
+  @Column(name = "end_at")
   private LocalDateTime endAt;
+  @Column(name = "time_span")
+  private String timeSpan;
 
   @CreationTimestamp
   private LocalDateTime createdAt;

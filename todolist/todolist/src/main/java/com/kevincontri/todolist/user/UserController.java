@@ -28,7 +28,6 @@ public class UserController {
     }
 
     var passwordHashed = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
-    // withDefaults() basicam
     user.setPassword(passwordHashed);
 
     // Criar o usuário
