@@ -35,6 +35,13 @@ public class TaskModel {
   @Column(name = "time_span")
   private String timeSpan;
 
+  public void setTitle(String title) throws IllegalArgumentException {
+    if (title != null && title.length() > 50) {
+      throw new IllegalArgumentException("O título deve ter no máximo 50 caracteres");
+    }
+    this.title = title;
+  }
+
   @CreationTimestamp
   private LocalDateTime createdAt;
 }

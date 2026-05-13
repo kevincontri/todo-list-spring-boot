@@ -438,3 +438,19 @@ public ResponseEntity updateTask(@RequestBody TaskModel updateTaskModel, HttpSer
 
 - Para não ficar tão verboso, é possível adicionar um método para validar somente os atributos não nulos, através da classe [`Utils.java`](..\todolist\todolist\src\main\java\com\kevincontri\todolist\utils\Utils.java) - (Link)
 
+### Métodos customizados em Models
+
+- Apesar do Lombok autogerar métodos de acesso para nossas classes, podemos criar classes customizadas como que sobrescrevendo as autogeradas, para adicionar validações mais específicas.
+- Exemplo no TaskModel:
+
+```java
+public void setTitle(String title) {
+  if (title != null && title.length() > 50) {
+    throw new IllegalArgumentException("O título deve ter no máximo 50 caracteres");
+  }
+  this.title = title;
+}
+```
+
+### Rodar a aplicação
+- `mvn spring-boot:run` no terminal, para não precisar manualmente clicar em _run_.
