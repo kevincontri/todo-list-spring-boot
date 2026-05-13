@@ -1,6 +1,5 @@
 package com.kevincontri.todolist.task;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
