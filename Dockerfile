@@ -1,17 +1,20 @@
-FROM ubuntu:latest as build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
-RUN apt-get update 
-RUN apt-get install openjdk-17-jdk -y
+WORKDIR /app
 
-COPY . . 
+COPY todolist/todolist/pom.xml ./pom.xml
+RUN mvn dependency:go-offline -B
 
-RUN apt-get install maven -y
-RUN mvn clean install -DskipTests
+COPY todolist/todolist/src ./src
+RUN mvn clean package -DskipTests
 
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre
 
+WORKDIR /app
+
+COPY --from=build /app/target/todolist-0.0.1-SNAPSHOT.jar app.jar
+
+ENV PORT=8080
 EXPOSE 8080
 
-COPY --from=build /target/todolist-0.0.1-SNAPSHOT.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
