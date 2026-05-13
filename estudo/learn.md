@@ -433,3 +433,8 @@ public ResponseEntity updateTask(@RequestBody TaskModel updateTaskModel, HttpSer
   }
 }
 ```
+
+### Método auxiliar para Update
+
+- Para não ficar tão verboso, é possível adicionar um método para validar somente os atributos não nulos, através da classe [`Utils.java`](..\todolist\todolist\src\main\java\com\kevincontri\todolist\utils\Utils.java) - (Link)
+

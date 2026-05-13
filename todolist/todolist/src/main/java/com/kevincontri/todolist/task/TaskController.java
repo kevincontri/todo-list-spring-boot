@@ -2,6 +2,9 @@ package com.kevincontri.todolist.task;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.kevincontri.todolist.utils.Utils;
+
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,36 +59,17 @@ public class TaskController {
   @PutMapping("/{id}")
   public ResponseEntity<?> updateTask(@RequestBody TaskModel updateTaskModel, HttpServletRequest request,
       @PathVariable UUID id) {
-
-    // Verificar se usuário é dono daquela task
-    var user_id = request.getAttribute("user_id");
-    var existingTask = this.taskRepository.findById(id).orElse(null);
-    if (existingTask == null) {
-      return ResponseEntity.status(404).body("Task não encontrada");
-    } else if (!existingTask.getUserId().equals(user_id)) {
-      return ResponseEntity.status(403).body("Acesso negado");
-    } else {
-
-      // Se o usuário for dono da task, atualizar os campos da task com os dados
-      // enviados pelo body, caso eles existam, se não, manter os dados atuais da
-      // task.
-      existingTask
-          .setTitle((updateTaskModel.getTitle() != null) ? updateTaskModel.getTitle() : existingTask.getTitle());
-
-      existingTask.setDescription((updateTaskModel.getDescription() != null) ? updateTaskModel.getDescription()
-          : existingTask.getDescription());
-
-      existingTask.setPriority(
-          (updateTaskModel.getPriority() != null) ? updateTaskModel.getPriority() : existingTask.getPriority());
-
-      existingTask.setStartAt(
-          (updateTaskModel.getStartAt() != null) ? updateTaskModel.getStartAt() : existingTask.getStartAt());
-
-      existingTask
-          .setEndAt((updateTaskModel.getEndAt() != null) ? updateTaskModel.getEndAt() : existingTask.getEndAt());
-
-      this.taskRepository.save(existingTask);
-      return ResponseEntity.status(200).body(existingTask);
+    var task = this.taskRepository.findById(id).orElse(null);
+    if (task == null) {
+      return ResponseEntity.status(400).body("Tarefa não encontrada");
     }
+
+    if (!task.getUserId().equals(request.getAttribute("user_id"))) {
+      return ResponseEntity.status(403).body("Usuário não tem permissão");
+    }
+
+    Utils.copyNonNullProperties(updateTaskModel, task);
+    var taskUpdated = this.taskRepository.save(task);
+    return ResponseEntity.status(200).body(taskUpdated);
   }
 }
